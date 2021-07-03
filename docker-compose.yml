@@ -1,0 +1,56 @@
+version: "3.8"
+
+
+services: 
+    db:
+        image: postgres
+        container_name: numapp_db
+
+        environment: 
+            POSTGRES_PASSWORD: ${DB_PASS}
+            POSTGRES_DB: ${DB}
+            
+
+        # volumes: 
+        #     - ./pgdata:/var/lib/postgres/data
+        
+        ports: 
+            - "5432:5432"
+
+    broker:
+         image: rabbitmq:3-management
+         container_name: numapp_broker
+         ports: 
+             - "5672:5672"
+             - "8080:15672"
+
+    backend:
+        image: redis
+        container_name: numapp_backend
+        ports: 
+            - "6379:6379"
+
+    listener:
+        image: listener_worker
+        container_name: numapp_listener
+        volumes: 
+            - ./app:/app
+        #command: uvicorn endpoint:fast_api --reload
+        ports:
+            - "8000:8000"
+            - "80:80"
+            
+        
+
+    worker:
+        image: listener_worker
+        container_name: numapp_worker
+        environment: 
+            BROKER_USR: ${BROKER_USR}
+            BROKER_PASS: ${BROKER_PASS}
+        command: celery -A celery_worker worker -l INFO --uid nobody
+        
+        # depends_on:
+        #     - broker
+        volumes: 
+            - ./app:/app

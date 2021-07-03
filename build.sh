@@ -1,0 +1,1 @@
+docker build -t listener_worker .
