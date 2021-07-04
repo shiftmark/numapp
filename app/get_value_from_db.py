@@ -1,26 +1,32 @@
 import psycopg2 as pg
 import pandas as pd
+import os
 
 def get_time(item_id):
-    df = None
+    # Retreives the sleep duration value from the database.
+
+    numapp_df = None
+    connection = None 
     
-    try:
-        conn = pg.connect(
-            host='db',
-            database='numapp_data',
-            user='postgres',
-            password='numapp'
+    # Save the database table in a dataframe and set the index to "item_id".
+    try:  
+        connection = pg.connect(
+            host = 'db',
+            database = os.environ['DB'],
+            user = 'postgres',
+            password = os.environ['DB_PASS']
             )
-        df = pd.read_sql_query('select * from numapp', conn, index_col="item_id")    
-    except:
-        pass
+        numapp_df = pd.read_sql_query(f'SELECT * FROM numapp', connection, index_col='item_id')
+
+    except(Exception, pg.DatabaseError) as error:
+        print(error)       
     
     finally:
-        pass
+        if connection is not None:
+            connection.close()
+            print('Connection to database closed.')
 
-    
-
-    return df.at[item_id, 'duration']
+    return numapp_df.at[item_id, 'duration']
 
 
     

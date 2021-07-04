@@ -1,56 +1,50 @@
 version: "3.8"
 
+# Creates the services bundle:
+#    API Listener - Message Broker/Backend  - Worker
+#                   Database
 
 services: 
     db:
-        image: postgres
+        image: postgres:13.2-alpine
         container_name: numapp_db
-
         environment: 
             POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_DB: ${DB}
-            
-
-        # volumes: 
-        #     - ./pgdata:/var/lib/postgres/data
-        
-        ports: 
-            - "5432:5432"
+        volumes: 
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#        ports: "5432:5432" # Uncomment if connecting to the database from host.
 
     broker:
-         image: rabbitmq:3-management
+         image: rabbitmq:3.8-rc-management-alpine
          container_name: numapp_broker
          ports: 
-             - "5672:5672"
              - "8080:15672"
 
     backend:
-        image: redis
+        image: redis:6.2.4-alpine
         container_name: numapp_backend
-        ports: 
-            - "6379:6379"
 
     listener:
-        image: listener_worker
+        build:
+            context: .
+            dockerfile: Dockerfile # Provides flexibility in naming the Dockerfile
         container_name: numapp_listener
         volumes: 
             - ./app:/app
-        #command: uvicorn endpoint:fast_api --reload
         ports:
-            - "8000:8000"
             - "80:80"
-            
-        
 
     worker:
-        image: listener_worker
+        image: numapp_listener
         container_name: numapp_worker
         environment: 
-            BROKER_USR: ${BROKER_USR}
-            BROKER_PASS: ${BROKER_PASS}
-        command: celery -A celery_worker worker -l INFO --uid nobody
-        
-        # depends_on:
-        #     - broker
+            DB_PASS: ${DB_PASS}
+            DB: ${DB}
+        command: celery -A celery_worker worker -l INFO --autoscale=10,2 --uid nobody
+        depends_on:
+             - "listener"
+             - "broker"
+             - "backend"
         volumes: 
             - ./app:/app
