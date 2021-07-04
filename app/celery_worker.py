@@ -1,5 +1,6 @@
 import celery
 from get_value_from_db import get_time
+from time import sleep
 
 cel = celery.Celery(
     'cel',
@@ -12,8 +13,9 @@ cel_log = celery.utils.log.get_task_logger(__name__)
 
 @cel.task()
 def queue_item(item_id):
-    get_time(item_id)
+    tm = get_time(item_id)
+    sleep(tm)
     cel_log.info('Celery done.')
-    return 'Done.'
+    return {'Done': f'in {tm} seconds'}
 
              

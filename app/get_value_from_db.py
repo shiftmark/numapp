@@ -3,6 +3,7 @@ import pandas as pd
 
 def get_time(item_id):
     df = None
+    
     try:
         conn = pg.connect(
             host='db',
@@ -10,7 +11,7 @@ def get_time(item_id):
             user='postgres',
             password='numapp'
             )
-        df = pd.read_sql_query('select * from numapp', conn)    
+        df = pd.read_sql_query('select * from numapp', conn, index_col="item_id")    
     except:
         pass
     
@@ -19,7 +20,7 @@ def get_time(item_id):
 
     
 
-    return df.columns
+    return df.at[item_id, 'duration']
 
 
     
