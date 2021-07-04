@@ -7,15 +7,16 @@ Requirements:
 
 Setup:
 1. Download the repository
-2. In the folder root, create a ".env" file with the postgres details:
-   DB_PASS=<choose password>
-   DB=<choose database name>
-Note: The username has the default value - "postgres". If you want to connect to database from outside of container, uncomment the line indicated in docker-compose.yml file, before running the command mentioned below.
+2. In the folder root, create a ".env" file with the Postgres details:</br>
+DB_PASS=<i>choose a password</i><br>
+DB=<i>choose a database name</i><br>
+<br>The username has the default value - "postgres". If you want to connect to database from outside of container, uncomment the line indicated in docker-compose.yml file, before running the command mentioned below.
 
-Run the app:
-1. From the directory root, run "docker-compose up -d"
 
+Running the app:
+1. From the directory root, run "docker-compose up -d"<br>
 Docker will download the required images (Postgres, Rabbitmq, Redis, FastApi).
+
 
 API calls, via http://localhost/docs or Postman:
 1. POST: http://localhost/item
