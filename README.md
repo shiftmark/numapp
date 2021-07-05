@@ -19,7 +19,7 @@ The username has the default value - "postgres". If you want to connect to datab
 1. From the directory root, run "docker-compose up -d"<br>
 Docker will download the required images (Postgres, Rabbitmq, Redis, FastApi).
 
-## API calls,
+## API calls
 via http://localhost/docs or Postman:
 1. POST: http://localhost/item<br>
    The valid "item_id"s for POST are "a" and "b", which return 5 and 12 respectively<br>
