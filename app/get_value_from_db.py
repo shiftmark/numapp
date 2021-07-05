@@ -16,7 +16,7 @@ def get_time(item_id):
             user = 'postgres',
             password = os.environ['DB_PASS']
             )
-        numapp_df = pd.read_sql_query(f'SELECT * FROM numapp', connection, index_col='item_id')
+        numapp_df = pd.read_sql_query('SELECT * FROM numapp', connection, index_col='item_id')
 
     except(Exception, pg.DatabaseError) as error:
         print(error)       
