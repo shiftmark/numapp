@@ -22,6 +22,6 @@ Docker will download the required images (Postgres, Rabbitmq, Redis, FastApi).
 ## API calls:
 via http://localhost/docs or Postman:
 1. POST: http://localhost/item<br>
-   The valid "item_id"s for POST are "a" and "b", which return 5 and 12 respectively<br>
+   The valid "item_id"s for POST are "a", "b", "c", "d", which return 5, 12, 24, 48 respectively<br>
 2. GET: http://localhost/result/<i>result id</i><br>
    The result id is returned by POST
