@@ -24,7 +24,7 @@ async def result(task_id):
         response = JSONResponse(
             status_code=202,
             content={'task_id': str(task_id),
-            'status': 'Sleeping...'}
+            'status': 'Processing...'}
             )
         return response
 
