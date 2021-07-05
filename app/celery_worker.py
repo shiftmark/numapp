@@ -18,5 +18,3 @@ def sleep_for(item_id):
     sleep(duration)
     cel_log.info('Worker done.')
     return {'Slept for': f'{duration} seconds'}
-
-             
