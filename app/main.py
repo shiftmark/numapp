@@ -16,7 +16,6 @@ async def request(item:Request):
     task_id = sleep_for.delay(item.item_id)
     return {'task_id': str(task_id), 'status': 'Processing (post)...'}
 
-
 @app.get('/result/{task_id}', response_model=Result, status_code=200)
 async def result(task_id):
 

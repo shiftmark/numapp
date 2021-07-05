@@ -6,7 +6,7 @@ def get_time(item_id):
     # Retreives the sleep duration value from the database.
 
     numapp_df = None
-    connection = None 
+    connection = None
     
     # Save the database table in a dataframe and set the index to "item_id".
     try:  
@@ -27,6 +27,4 @@ def get_time(item_id):
             print('Connection to database closed.')
 
     return numapp_df.at[item_id, 'duration']
-
-
     
