@@ -31,8 +31,8 @@ services:
             dockerfile: Dockerfile # Provides flexibility in naming the Dockerfile
         image: numapp_listener
         container_name: numapp_listener
-        volumes: 
-            - ./app:/app
+#        volumes: 
+#            - ./app:/app
         ports:
             - "80:80"
 
@@ -42,11 +42,11 @@ services:
         environment: 
             DB_PASS: ${DB_PASS}
             DB: ${DB}
-        command: celery -A celery_worker worker -l INFO --autoscale=10,2 --uid nobody
+         command: celery -A celery_worker worker -l INFO --autoscale=10,2 --uid nobody
         depends_on:
              - "listener"
              - "broker"
              - "backend"
-        volumes: 
-            - ./app:/app
+#        volumes: 
+#            - ./app:/app
             
