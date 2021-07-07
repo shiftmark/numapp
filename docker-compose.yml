@@ -42,7 +42,7 @@ services:
         environment: 
             DB_PASS: ${DB_PASS}
             DB: ${DB}
-         command: celery -A celery_worker worker -l INFO --autoscale=10,2 --uid nobody
+        command: celery -A celery_worker worker -l INFO --autoscale=10,2 --uid nobody
         depends_on:
              - "listener"
              - "broker"
