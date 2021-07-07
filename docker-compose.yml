@@ -29,6 +29,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile # Provides flexibility in naming the Dockerfile
+        image: numapp_listener
         container_name: numapp_listener
         volumes: 
             - ./app:/app
