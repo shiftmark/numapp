@@ -44,9 +44,8 @@ services:
             DB: ${DB}
         command: celery -A celery_worker worker -l INFO --autoscale=10,2 --uid nobody
         depends_on:
-             - "listener"
-             - "broker"
-             - "backend"
+             - listener
+             - broker
+             - backend
 #        volumes: 
 #            - ./app:/app
-            
