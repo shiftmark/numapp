@@ -11,22 +11,25 @@ def read_root():
     return {'All': 'good!'}
 
 @app.post('/item', response_model=Task, status_code=202)
-async def request(item:Request):
+async def request(item: Request):
 
     task_id = sleep_for.delay(item.item_id)
-    return {'task_id': str(task_id), 'status': 'Processing (post)...'}
+    res = {'task_id': str(task_id), 'status': 'Processing (post)...'}
+
+    return res
 
 @app.get('/result/{task_id}', response_model=Result, status_code=200)
 async def result(task_id):
 
     task_result = AsyncResult(task_id)
     if not task_result.ready():
-        response = JSONResponse(
+        res_not_ready = JSONResponse(
             status_code=202,
             content={'task_id': str(task_id),
-            'status': 'Processing...'}
+                     'status': 'Processing...'}
             )
-        return response
+        return res_not_ready
 
-    result = task_result.get()
-    return {'task_id': task_id, 'status': str(result)}
+    res_ready = {'task_id': task_id, 'status': str(task_result.get())}
+
+    return res_ready
